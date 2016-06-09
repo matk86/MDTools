@@ -1,0 +1,16 @@
+*~
+*.bak
+*.old
+old
+*.pyc
+_build
+_static
+_templates
+build
+dist
+*.egg-info
+*.swp
+.project
+.pydevproject
+.ipynb_checkpoints
+.idea
