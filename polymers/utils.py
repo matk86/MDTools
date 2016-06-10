@@ -1,12 +1,28 @@
-import openbabel
-
 from pymatgen.io.babel import BabelMolAdaptor
+
+import openbabel
 
 
 __author__ = "Kiran Mathew"
 
 
 def get_topology(molecule):
+    """
+    Return the molecular topology obtained via openabel
+
+    Args:
+        molecule (Molecule): pymatgen Molecule object
+
+    Returns:
+        atoms (list): list of atoms and their force field mapping
+        bonds (list): [[i,j, bond_type], ...] where bond_type is
+            a sorted tuple of the force field names of atoms i and j.
+        angles (list): [[i,j, k, angle_type], ...] where angle_type is
+            a sorted tuple of the force field names of atoms i, j and k.
+        dihedrals (list): [[i,j, k, l, dihedral_type], ...] where
+            dihedral_type is a sorted tuple of the force field names of
+            atoms i, j, k and l.
+    """
     bma = BabelMolAdaptor(molecule)
     obmol = bma.openbabel_mol
     #print obmol.NumAtoms(), obmol.NumBonds()

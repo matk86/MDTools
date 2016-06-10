@@ -16,11 +16,20 @@ class Polymer(object):
                  n_units, link_distance=1.0, linear_chain=False):
         """
         Args:
+            start_monomer (Molecule): Starting molecule
+            s_head (int): starting atom index of the start_monomer molecule
+            s_tail (int): tail atom index of the start_monomer
             monomer (Molecule): The monomer
-            n_units (int): number of monomer units excluding the start and terminal molecules
             head (int): index of the atom in the monomer that forms the head
-            tail (int): tail atom index. monomers will be connected from head to tail
+            tail (int): tail atom index. monomers will be connected from
+                tail to head
+            end_monomer (Molecule): Terminal molecule
+            e_head (int): starting atom index of the end_monomer molecule
+            e_tail (int): tail atom index of the end_monomer
+            n_units (int): number of monomer units excluding the start and
+                terminal molecules
             link_distance (float): distance between consecutive monomers
+            linear_chain (bool): linear or random walk polymer chain
         """
         self.start = s_head
         self.end = s_tail
@@ -52,6 +61,12 @@ class Polymer(object):
     def _create(self, monomer, mon_vector, linear_chain):
         """
         create the polymer from the monomer
+
+        Args:
+            monomer (Molecule)
+            mon_vector (numpy.array): molecule vector that starts from the
+                start atom index to the end atom index
+            linear_chain (bool): linear or random walk
         """
         while self.length != self.n_units:
             if linear_chain:
@@ -75,6 +90,13 @@ class Polymer(object):
     def _align_monomer(self, monomer, mon_vector, move_direction):
         """
         rotate the monomer so that it is aligned along the move direction
+
+        Args:
+            monomer (Molecule)
+            mon_vector (numpy.array): molecule vector that starts from the
+                start atom index to the end atom index
+            move_direction (numpy.array): the direction of the polymer chain
+                extension
         """
         axis = np.cross(mon_vector, move_direction)
         origin = monomer[self.start].coords
@@ -90,7 +112,8 @@ class Polymer(object):
         Args:
             monomer (Molecule): monomer molecule
             mon_vector (numpy.array): monomer vector that points from head to tail.
-            move_direction (numpy.array): direction along which the monomer will be positioned
+            move_direction (numpy.array): direction along which the monomer
+                will be positioned
         """
         translate_by = self.molecule.cart_coords[
                            self.end] + self.link_distance * move_direction
