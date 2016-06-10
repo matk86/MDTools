@@ -38,8 +38,8 @@ def get_topology(molecule):
     angles = [x+[tuple(((molecule[x[0]].ff_map,
                          molecule[x[1]].ff_map,
                          molecule[x[2]].ff_map)))] for x in angles ]
-    dihedrals =  [x+[tuple(sorted((molecule[x[0]].ff_map,
-                                   molecule[x[1]].ff_map,
-                                   molecule[x[2]].ff_map,
-                                   molecule[x[3]].ff_map)))] for x in dihedrals ]
+    dihedrals =  [x+[tuple((molecule[x[0]].ff_map,
+                            molecule[x[1]].ff_map,
+                            molecule[x[2]].ff_map,
+                            molecule[x[3]].ff_map))] for x in dihedrals ]
     return atoms, bonds, angles, dihedrals
