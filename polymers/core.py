@@ -84,7 +84,7 @@ class Polymer(object):
         while self.prev_move == (move + 3) % 6:
             move = np.random.randint(1, 7)
         self.prev_move = move
-        print "move", move
+        #print "move", move
         return np.array(self.moves[move])
 
     def _align_monomer(self, monomer, mon_vector, move_direction):
@@ -134,4 +134,4 @@ class Polymer(object):
         if not does_cross:
             self.length += 1
             self.end += len(self.monomer)
-            print "length: ", self.length
+            #print "length: ", self.length
