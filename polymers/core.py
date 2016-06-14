@@ -36,6 +36,7 @@ class Polymer(object):
         self.monomer = monomer
         self.n_units = n_units
         self.link_distance = link_distance
+        self.linear_chain = linear_chain
         # translate monomers so that head atom is at the origin
         start_monomer.translate_sites(range(len(start_monomer)),
                                       - monomer.cart_coords[s_head])
@@ -51,14 +52,14 @@ class Polymer(object):
         self.molecule = start_monomer.copy()
         self.length = 0
         # create the chain
-        self._create(self.monomer, self.mon_vector, linear_chain)
+        self._create(self.monomer, self.mon_vector)
         # terminate the chain with the end_monomer
         self.n_units += 1
         end_mon_vector = end_monomer.cart_coords[e_tail] - \
                          end_monomer.cart_coords[e_head]
-        self._create(end_monomer, end_mon_vector, linear_chain)
+        self._create(end_monomer, end_mon_vector)
 
-    def _create(self, monomer, mon_vector, linear_chain):
+    def _create(self, monomer, mon_vector):
         """
         create the polymer from the monomer
 
@@ -66,10 +67,9 @@ class Polymer(object):
             monomer (Molecule)
             mon_vector (numpy.array): molecule vector that starts from the
                 start atom index to the end atom index
-            linear_chain (bool): linear or random walk
         """
         while self.length != self.n_units:
-            if linear_chain:
+            if self.linear_chain:
                 move_direction = np.array(mon_vector) / np.linalg.norm(
                     mon_vector)
             else:
@@ -101,7 +101,7 @@ class Polymer(object):
         axis = np.cross(mon_vector, move_direction)
         origin = monomer[self.start].coords
         angle = get_angle(mon_vector, move_direction)
-        # print "axis, origin, angle", axis, origin, angle
+        #print "axis, origin, angle", axis, origin, angle
         op = SymmOp.from_origin_axis_angle(origin, axis, angle)
         monomer.apply_operation(op)
 
@@ -118,7 +118,8 @@ class Polymer(object):
         translate_by = self.molecule.cart_coords[
                            self.end] + self.link_distance * move_direction
         monomer.translate_sites(range(len(monomer)), translate_by)
-        self._align_monomer(monomer, mon_vector, move_direction)
+        if not self.linear_chain:
+            self._align_monomer(monomer, mon_vector, move_direction)
         # add monomer if there are no crossings
         does_cross = False
         for i, site in enumerate(monomer):
