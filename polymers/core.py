@@ -50,7 +50,7 @@ class Polymer(object):
         self.prev_move = 1
         # places the start monomer at the beginning of the chain
         self.molecule = start_monomer.copy()
-        self.length = 0
+        self.length = 1
         # create the chain
         self._create(self.monomer, self.mon_vector)
         # terminate the chain with the end_monomer
@@ -68,7 +68,7 @@ class Polymer(object):
             mon_vector (numpy.array): molecule vector that starts from the
                 start atom index to the end atom index
         """
-        while self.length != self.n_units:
+        while self.length != (self.n_units-1):
             if self.linear_chain:
                 move_direction = np.array(mon_vector) / np.linalg.norm(
                     mon_vector)
