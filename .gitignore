@@ -12,5 +12,7 @@ dist
 *.swp
 .project
 .pydevproject
-.ipynb_checkpoints
+.ipynb_checkpoints/
 .idea
+.DS_Store
+pack.inp

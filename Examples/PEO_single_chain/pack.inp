@@ -1,9 +1,0 @@
-output poly_packed.xyz
-filetype xyz
-tolerance 2.0
-nloop 1000
-
-structure /var/folders/zl/glc6fx7d3xx6q0tfjczvtwym0000gn/T/tmpp9gaRB/0.xyz
-  number 1
-  inside box 0.0 0.0 0.0 36.1366734632 36.1366734632 36.1366734632
-end structure
