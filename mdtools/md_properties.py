@@ -17,7 +17,11 @@ __author__ = "Kiran Mathew"
 __email__ = "kmathew@lbl.gov"
 
 
-class TransportProperties(object):
+class GreenKuboProperties(object):
+    """
+    Green-Kubo formulas for the transport coefficient relates a transport
+    coefficient to a time integral of a time correlation function.
+    """
     def __init__(self, lammpsrun):
         """
         Args:
@@ -27,7 +31,7 @@ class TransportProperties(object):
 
     def get_integrated_correlation(self, array):
         """
-        Compute the autocorrelation and integrate it wrt time.
+        Compute the normalized autocorrelation and integrate it wrt time.
 
         Args:
             array (numpy.ndarray): input numpy array
@@ -36,14 +40,28 @@ class TransportProperties(object):
             integrated autocorrelation
         """
         auto_corr_full = np.correlate(array, array, mode="full")
-        auto_corr = auto_corr_full[auto_corr_full.size / 2:]
+        auto_corr = auto_corr_full[auto_corr_full.size / 2:] / np.max(auto_corr_full)
         time = self.lammpsrun.traj_timesteps
         return sp_integrate.simps(auto_corr, time)
 
     @property
-    def current(self):
+    def diffusivity(self):
         """
-        net molecular current for each timestep
+        Green-Kubo diffusivity from the velocity auto-correlation.
+
+        Returns:
+            [Dxx_mol1, Dyy_mol1, Dzz_mol1, ...]
+
+        TODO: fix the units
+        """
+        return [self.get_integrated_correlation(self.lammpsrun.mol_velocity[:, i, dim])
+                for i in range(self.lammpsrun.nmols)
+                for dim in range(3)]
+
+    @property
+    def charge_flux(self):
+        """
+        net molecular charge_flux for each timestep
         J = sum(v_mol * charge_mol)
 
         Returns:
@@ -62,19 +80,19 @@ class TransportProperties(object):
     @property
     def electrical_conductivity(self):
         """
-        Electrical conductivity from the auto-correlation of the molecular
-        currents.
+        Electrical conductivity from the auto-correlation of the charge flux.
 
         TODO: fix the units
         """
-        mol_current = self.current
+        mol_current = self.charge_flux
         kappa = [self.get_integrated_correlation(mol_current[:, dim])
                  for dim in range(3)]
         return kappa
 
     def viscosity(self, skip):
         """
-        Computes viscosity from pressure correlations.
+        Computes Green-Kubo viscosity from the transverse component of the
+        stress-stress correlation
 
         TODO: Fix units
         """
