@@ -1,7 +1,6 @@
 # coding: utf-8
 
-from __future__ import division, print_function, unicode_literals, \
-    absolute_import
+from __future__ import division, print_function, unicode_literals, absolute_import
 
 """
 This module computes various properties that can be extracted from lammps
@@ -21,19 +20,6 @@ __email__ = "kmathew@lbl.gov"
 class TransportProperties(object):
     def __init__(self, lammpsrun):
         self.lammpsrun = lammpsrun
-
-    def properties_summary_from_diffusion_analyzer(self, specie, temperature, time_step, step_skip,
-                                               smoothed=None, min_obs=30, avg_nsteps=1000):
-        """
-        Use the pymatgen diffusion analyzer to get a summary of transport
-        properties as computed by pymatgen.
-
-        See pymatgen.analysis.diffusion_analyzer for the documentation.
-        """
-        diffusion_analyzer = self.lammpsrun.get_diffusion_analyzer(specie, temperature, time_step,
-                                                                   step_skip, smoothed, min_obs,
-                                                                   avg_nsteps)
-        return diffusion_analyzer.get_summary_dict()
 
     def get_integrated_correlation(self, array):
         """
@@ -106,14 +92,3 @@ class TransportProperties(object):
                           for comp in ['pxy', 'pxz', 'pyz', 'pxx', 'pyy',
                                        'pzz'] ]
             return nu
-
-
-class GeometricProperties(object):
-    def __init__(self, lammpsrun):
-        self.lammpsrun = lammpsrun
-
-    def radial_distribution(self):
-        pass
-
-    def coordination_number(self):
-        pass
