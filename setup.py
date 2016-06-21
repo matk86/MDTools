@@ -6,15 +6,15 @@ from setuptools import setup, find_packages
 MPINT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 setup(
-    name="polymers",
+    name="mdtools",
     version="0.0.0",
     install_requires=["pymatgen>=3.6.1"],
     extras_require={"babel": ["openbabel", "pybel"]},
     author="Kiran Mathew, Brandon Wood",
     author_email="kmathew@lbl.gov",
-    description=("Polymer Analysis"),
+    description=("Molecular Dynamics Helper Tools"),
     license="MIT",
-    url="https://github.com/matk86/Polymers",
+    url="https://github.com/matk86/MDTools",
     packages=find_packages(),
     long_description=open(os.path.join(os.path.dirname(__file__), 'README.md')).read(),
     classifiers=[
