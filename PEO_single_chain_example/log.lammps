@@ -1,0 +1,81 @@
+LAMMPS (10 Feb 2015)
+units  real
+dimension  3
+atom_style  full
+boundary  p p p
+neighbor  10.0 bin
+bond_style  harmonic
+angle_style  harmonic
+dihedral_style  opls
+read_data  in.data
+  orthogonal box = (0 0 0) to (150 150 150)
+  1 by 2 by 2 MPI processor grid
+  reading atoms ...
+  408 atoms
+  scanning bonds ...
+  4 = max bonds/atom
+  scanning angles ...
+  6 = max angles/atom
+  scanning dihedrals ...
+  9 = max dihedrals/atom
+  reading bonds ...
+  407 bonds
+  reading angles ...
+  754 angles
+  reading dihedrals ...
+  861 dihedrals
+  4 = max # of 1-2 neighbors
+  6 = max # of 1-3 neighbors
+  12 = max # of 1-4 neighbors
+  14 = max # of special neighbors
+pair_style  buck/coul/cut 15.0
+pair_coeff 1 1 2649.6 0.2674 27.22
+pair_coeff 1 2 4320.0 0.2928 137.6
+pair_coeff 1 3 14176.0 0.2563 104.0
+pair_coeff 2 2 14976.0 0.3236 637.6
+pair_coeff 2 3 33702.4 0.2796 503.0
+pair_coeff 3 3 75844.8 0.2461 396.9
+dump DUMP all custom 200 poly.lammpstrj id type x y z ix iy iz mol
+dump traj all dcd 100 lammps_traj.dcd
+thermo_style  custom step temp press etotal fmax fnorm
+thermo  100
+fix  NPT all npt temp 298 298 100.0 iso 0.0 0.0 100.0
+run  1000
+Neighbor list info ...
+  1 neighbor list requests
+  update every 1 steps, delay 10 steps, check yes
+  master list distance cutoff = 25
+Memory usage per processor = 12.3891 Mbytes
+Step Temp Press TotEng Fmax Fnorm 
+       0            0   -101.56733    8611.3393    296.58439    2687.9698 
+     100          nan          nan          nan          nan          nan 
+     200          nan          nan          nan          nan          nan 
+     300          nan          nan          nan          nan          nan 
+     400          nan          nan          nan          nan          nan 
+     500          nan          nan          nan          nan          nan 
+     600          nan          nan          nan          nan          nan 
+     700          nan          nan          nan          nan          nan 
+     800          nan          nan          nan          nan          nan 
+     900          nan          nan          nan          nan          nan 
+    1000          nan          nan          nan          nan          nan 
+Loop time of 0.377867 on 4 procs for 1000 steps with 408 atoms
+
+Pair  time (%) = 0.0543407 (14.3809)
+Bond  time (%) = 0.20062 (53.0926)
+Neigh time (%) = 0.000510752 (0.135167)
+Comm  time (%) = 0.103824 (27.4764)
+Outpt time (%) = 0.00192422 (0.509231)
+Other time (%) = 0.0166477 (4.4057)
+
+Nlocal:    102 ave 132 max 63 min
+Histogram: 1 0 0 0 1 0 0 0 1 1
+Nghost:    305 ave 345 max 274 min
+Histogram: 1 0 1 0 0 1 0 0 0 1
+Neighs:    13615.8 ave 22709 max 7638 min
+Histogram: 1 0 1 1 0 0 0 0 0 1
+
+Total # of neighbors = 54463
+Ave neighs/atom = 133.488
+Ave special neighs/atom = 9.91176
+Neighbor list builds = 1
+Dangerous builds = 1
