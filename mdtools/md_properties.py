@@ -1,7 +1,6 @@
 # coding: utf-8
 
-from __future__ import division, print_function, unicode_literals, \
-    absolute_import
+from __future__ import division, print_function, unicode_literals, absolute_import
 
 """
 This module computes various properties that can be extracted from lammps
@@ -20,24 +19,15 @@ __email__ = "kmathew@lbl.gov"
 
 class TransportProperties(object):
     def __init__(self, lammpsrun):
+        """
+        Args:
+             lammpsrun (LammpsRun)
+        """
         self.lammpsrun = lammpsrun
-
-    def properties_summary_from_diffusion_analyzer(self, specie, temperature, time_step, step_skip,
-                                               smoothed=None, min_obs=30, avg_nsteps=1000):
-        """
-        Use the pymatgen diffusion analyzer to get a summary of transport
-        properties as computed by pymatgen.
-
-        See pymatgen.analysis.diffusion_analyzer for the documentation.
-        """
-        diffusion_analyzer = self.lammpsrun.get_diffusion_analyzer(specie, temperature, time_step,
-                                                                   step_skip, smoothed, min_obs,
-                                                                   avg_nsteps)
-        return diffusion_analyzer.get_summary_dict()
 
     def get_integrated_correlation(self, array):
         """
-        compute the autocorrelation and integrate it wrt time
+        Compute the autocorrelation and integrate it wrt time.
 
         Args:
             array (numpy.ndarray): input numpy array
@@ -45,7 +35,7 @@ class TransportProperties(object):
         Returns:
             integrated autocorrelation
         """
-        auto_corr_full = np.correlate(array, array,mode="full")
+        auto_corr_full = np.correlate(array, array, mode="full")
         auto_corr = auto_corr_full[auto_corr_full.size / 2:]
         time = self.lammpsrun.traj_timesteps
         return sp_integrate.simps(auto_corr, time)
@@ -78,19 +68,10 @@ class TransportProperties(object):
         TODO: fix the units
         """
         mol_current = self.current
-        kappa = [self.get_integrated_correlation(mol_current[:,dim]) for dim
-                 in range(3)]
+        kappa = [self.get_integrated_correlation(mol_current[:, dim])
+                 for dim in range(3)]
         return kappa
 
-    @property
-    def diffusivity(self):
-        pass
-
-    @property
-    def nernst_einstein_conductivity(self):
-        pass
-
-    @property
     def viscosity(self, skip):
         """
         Computes viscosity from pressure correlations.
@@ -101,19 +82,11 @@ class TransportProperties(object):
             print("no pressure data")
             raise KeyError
         else:
-            nu = [self.get_integrated_correlation(np.array(
-                self.lammpsrun.lammpslog[comp][skip:]))
-                          for comp in ['pxy', 'pxz', 'pyz', 'pxx', 'pyy',
-                                       'pzz'] ]
+            nu = [
+                self.get_integrated_correlation(np.array(self.lammpsrun.lammpslog[comp][skip:]))
+                for comp in ['pxy', 'pxz', 'pyz', 'pxx', 'pyy', 'pzz']]
             return nu
 
-
-class GeometricProperties(object):
-    def __init__(self, lammpsrun):
-        self.lammpsrun = lammpsrun
-
-    def radial_distribution(self):
-        pass
-
-    def coordination_number(self):
+    @property
+    def nernst_einstein_conductivity(self):
         pass
