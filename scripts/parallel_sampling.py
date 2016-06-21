@@ -1,4 +1,7 @@
 import numpy as np
+# uncomment the following on matgen
+#import matplotlib
+#matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 import multiprocessing
@@ -30,7 +33,7 @@ def main(args):
 
 
 if __name__=='__main__':
-    nsamples = 10000
+    nsamples = 100000
     nmoves = 100
     manager = Manager()
     samples = manager.list()
@@ -44,4 +47,5 @@ if __name__=='__main__':
     n, bins, _ = plt.hist(np.array(samples), 50)
     normal = [normal_distribution(x, avg, std) for x in bins]
     plt.plot(bins, np.array(normal)*max(n)*10, 'r')
+    plt.savefig("distribution.png")
     plt.show()
