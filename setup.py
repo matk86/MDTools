@@ -8,7 +8,7 @@ MPINT_DIR = os.path.dirname(os.path.abspath(__file__))
 setup(
     name="mdtools",
     version="0.0.0",
-    install_requires=["pymatgen>=3.6.1"],
+    install_requires=["pymatgen>=3.7.1"],
     extras_require={"babel": ["openbabel", "pybel"]},
     author="Kiran Mathew, Brandon Wood",
     author_email="kmathew@lbl.gov",
