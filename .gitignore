@@ -16,6 +16,6 @@ dist
 .idea
 .DS_Store
 pack.inp
-.dat*
+.dat
 *.in
 *.inp
