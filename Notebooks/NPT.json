@@ -1,6 +1,7 @@
 {
   "log": "lammps.log",
   "units": "real",
+  "timestep": 1,
   "dimension": "3",
   "atom_style": "full",
   "boundary": "p p p",
