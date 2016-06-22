@@ -1,4 +1,5 @@
 {
+  "log": "lammps.log",
   "units": "real",
   "dimension": "3",
   "atom_style": "full",
